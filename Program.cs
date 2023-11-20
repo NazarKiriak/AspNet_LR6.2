@@ -1,10 +1,18 @@
+using AspNetMVC.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(options =>
+{
+    // ׀ו÷סענאצ³ÿ פ³כüענא LogActionFilter
+    options.Filters.Add(typeof(LogActionFilter));
+
+    // ׀ו÷סענאצ³ÿ פ³כüענא UniqueUsersFilter
+    options.Filters.Add(typeof(UniqueUsersFilter));
+});
 
 var app = builder.Build();
 
@@ -28,16 +36,6 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllerRoute(
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");
-
-    endpoints.MapControllerRoute(
-        name: "download-file",
-        pattern: "File/DownloadFile",
-        defaults: new { controller = "File", action = "Index" });
-
-    endpoints.MapControllerRoute(
-        name: "product",
-        pattern:"Product/Index",
-        defaults: new { controller = "Product", action = "Index" });
 
 });
 
